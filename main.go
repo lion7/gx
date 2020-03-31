@@ -1040,8 +1040,9 @@ var DepsCommand = cli.Command{
 			Name:  "tree",
 			Usage: "print deps as a tree",
 		},
-		&cli.BoolTFlag{
+		&cli.BoolFlag{
 			Name:  "s,sort",
+			Value: true,
 			Usage: "sort output by package name",
 		},
 		&cli.StringFlag{
@@ -1054,12 +1055,12 @@ var DepsCommand = cli.Command{
 		},
 	},
 	Subcommands: []*cli.Command{
-		depBundleCommand,
-		depFindCommand,
-		depStatsCommand,
-		depDupesCommand,
-		depCheckCommand,
-		depDotCommand,
+		&depBundleCommand,
+		&depFindCommand,
+		&depStatsCommand,
+		&depDupesCommand,
+		&depCheckCommand,
+		&depDotCommand,
 	},
 	Action: func(c *cli.Context) error {
 		rec := c.Bool("r")
