@@ -108,22 +108,22 @@ func main() {
 	app.Usage = "gx is a packaging tool that uses ipfs"
 
 	app.Commands = []*cli.Command{
-		CleanCommand,
-		DepsCommand,
-		GetCommand,
-		ImportCommand,
-		DiffCommand,
-		InitCommand,
-		InstallCommand,
-		LockInstallCommand,
-		PublishCommand,
-		ReleaseCommand,
-		RepoCommand,
-		UpdateCommand,
-		VersionCommand,
-		ViewCommand,
-		SetCommand,
-		TestCommand,
+		&CleanCommand,
+		&DepsCommand,
+		&GetCommand,
+		&ImportCommand,
+		&DiffCommand,
+		&InitCommand,
+		&InstallCommand,
+		&LockInstallCommand,
+		&PublishCommand,
+		&ReleaseCommand,
+		&RepoCommand,
+		&UpdateCommand,
+		&VersionCommand,
+		&ViewCommand,
+		&SetCommand,
+		&TestCommand,
 	}
 
 	if err := app.Run(os.Args); err != nil {
