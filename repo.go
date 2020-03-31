@@ -33,11 +33,11 @@ var RepoCommand = cli.Command{
 	Name:  "repo",
 	Usage: "manage set of tracked repositories",
 	Subcommands: []*cli.Command{
-		RepoAddCommand,
-		RepoRmCommand,
-		RepoListCommand,
-		RepoQueryCommand,
-		RepoUpdateCommand,
+		&RepoAddCommand,
+		&RepoRmCommand,
+		&RepoListCommand,
+		&RepoQueryCommand,
+		&RepoUpdateCommand,
 	},
 }
 
