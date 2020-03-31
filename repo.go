@@ -8,7 +8,7 @@ import (
 	"text/tabwriter"
 
 	hd "github.com/mitchellh/go-homedir"
-	cli "github.com/urfave/cli"
+	cli "github.com/urfave/cli/v2"
 	gx "github.com/whyrusleeping/gx/gxutil"
 	. "github.com/whyrusleeping/stump"
 )
@@ -32,7 +32,7 @@ func cfgPath(global bool) (string, error) {
 var RepoCommand = cli.Command{
 	Name:  "repo",
 	Usage: "manage set of tracked repositories",
-	Subcommands: []cli.Command{
+	Subcommands: []*cli.Command{
 		RepoAddCommand,
 		RepoRmCommand,
 		RepoListCommand,
@@ -45,7 +45,7 @@ var RepoAddCommand = cli.Command{
 	Name:  "add",
 	Usage: "add a naming repository",
 	Flags: []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "global",
 			Usage: "add repository to global set",
 		},
@@ -88,7 +88,7 @@ var RepoRmCommand = cli.Command{
 	Name:  "rm",
 	Usage: "remove a repo from tracking",
 	Flags: []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "global",
 			Usage: "remove repository from global set",
 		},
