@@ -84,7 +84,7 @@ func main() {
 	app.Author = "whyrusleeping"
 	app.Version = gx.GxVersion
 	app.Flags = []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "verbose",
 			Usage: "print verbose logging information",
 		},
@@ -151,7 +151,7 @@ number. This is a soft requirement and can be skipped by specifying the
 -f or --force flag.
 `,
 	Flags: []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "force,f",
 			Usage: "allow publishing without bumping version",
 		},
@@ -240,11 +240,11 @@ EXAMPLE
     file in the repository to find which hash to import.
 `,
 	Flags: []cli.Flag{
-		cli.BoolTFlag{
+		&cli.BoolTFlag{
 			Name:  "global",
 			Usage: "download imported package to global store",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "local",
 			Usage: "install packages locally (equal to --global=false)",
 		},
@@ -324,19 +324,19 @@ var InstallCommand = cli.Command{
 	Usage:   "install this package",
 	Aliases: []string{"i"},
 	Flags: []cli.Flag{
-		cli.BoolTFlag{
+		&cli.BoolTFlag{
 			Name:  "global",
 			Usage: "install package in global namespace",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "local",
 			Usage: "install packages locally (equal to --global=false)",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "save",
 			Usage: "write installed packages as deps in package.json",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "nofancy",
 			Usage: "write minimal output",
 		},
@@ -429,7 +429,7 @@ var GetCommand = cli.Command{
 	Name:  "get",
 	Usage: "download a package",
 	Flags: []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "o",
 			Usage: "specify output dir name",
 		},
@@ -462,7 +462,7 @@ var InitCommand = cli.Command{
 	Name:  "init",
 	Usage: "initialize a package in the current working directory",
 	Flags: []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "lang",
 			Usage: "specify primary language of new package",
 		},
@@ -511,15 +511,15 @@ EXAMPLE:
    $ gx update $OLDHASH $NEWHASH
 `,
 	Flags: []cli.Flag{
-		cli.BoolTFlag{
+		&cli.BoolTFlag{
 			Name:  "global",
 			Usage: "install new package in global namespace",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "local",
 			Usage: "install packages locally (equal to --global=false)",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "with-deps",
 			Usage: "experimental feature to recursively update child deps too",
 		},
@@ -918,7 +918,7 @@ var LockInstallCommand = cli.Command{
 	Name:  "lock-install",
 	Usage: "Install deps from lockfile into vendor",
 	Flags: []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "nofancy",
 			Usage: "write minimal output",
 		},
@@ -954,7 +954,7 @@ var CleanCommand = cli.Command{
    removing them.
    `,
 	Flags: []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "dry-run",
 			Usage: "print out things to be removed without removing them",
 		},
@@ -1021,27 +1021,27 @@ var DepsCommand = cli.Command{
    to show which packages are dependent on which other.
 `,
 	Flags: []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "r",
 			Usage: "print deps recursively",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "q",
 			Usage: "only print hashes",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "tree",
 			Usage: "print deps as a tree",
 		},
-		cli.BoolTFlag{
+		&cli.BoolTFlag{
 			Name:  "s,sort",
 			Usage: "sort output by package name",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "highlight",
 			Usage: "for tree printing, prune branches unrelated to arg",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "collapse",
 			Usage: "for tree printing, prune branches already printed",
 		},
@@ -1335,7 +1335,7 @@ EXAMPLE:
    > gx set license MIT
 `,
 	Flags: []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "in-json",
 			Usage: "Interpret input as json",
 		},
