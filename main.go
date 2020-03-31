@@ -14,7 +14,7 @@ import (
 	"text/tabwriter"
 
 	"github.com/blang/semver"
-	cli "github.com/urfave/cli"
+	cli "github.com/urfave/cli/v2"
 	gx "github.com/whyrusleeping/gx/gxutil"
 	filter "github.com/whyrusleeping/json-filter"
 	progmeter "github.com/whyrusleeping/progmeter"
@@ -81,7 +81,11 @@ func main() {
 	}
 
 	app := cli.NewApp()
-	app.Author = "whyrusleeping"
+	app.Authors = []*cli.Author{
+	        &cli.Author{
+			Name:  "whyrusleeping",
+		},
+	}
 	app.Version = gx.GxVersion
 	app.Flags = []cli.Flag{
 		&cli.BoolFlag{
@@ -103,7 +107,7 @@ func main() {
 
 	app.Usage = "gx is a packaging tool that uses ipfs"
 
-	app.Commands = []cli.Command{
+	app.Commands = []*cli.Command{
 		CleanCommand,
 		DepsCommand,
 		GetCommand,
@@ -240,8 +244,9 @@ EXAMPLE
     file in the repository to find which hash to import.
 `,
 	Flags: []cli.Flag{
-		&cli.BoolTFlag{
+		&cli.BoolFlag{
 			Name:  "global",
+			Value: true,
 			Usage: "download imported package to global store",
 		},
 		&cli.BoolFlag{
@@ -324,8 +329,9 @@ var InstallCommand = cli.Command{
 	Usage:   "install this package",
 	Aliases: []string{"i"},
 	Flags: []cli.Flag{
-		&cli.BoolTFlag{
+		&cli.BoolFlag{
 			Name:  "global",
+			Value: true,
 			Usage: "install package in global namespace",
 		},
 		&cli.BoolFlag{
@@ -511,8 +517,9 @@ EXAMPLE:
    $ gx update $OLDHASH $NEWHASH
 `,
 	Flags: []cli.Flag{
-		&cli.BoolTFlag{
+		&cli.BoolFlag{
 			Name:  "global",
+			Value: true,
 			Usage: "install new package in global namespace",
 		},
 		&cli.BoolFlag{
@@ -1046,7 +1053,7 @@ var DepsCommand = cli.Command{
 			Usage: "for tree printing, prune branches already printed",
 		},
 	},
-	Subcommands: []cli.Command{
+	Subcommands: []*cli.Command{
 		depBundleCommand,
 		depFindCommand,
 		depStatsCommand,
