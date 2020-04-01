@@ -62,11 +62,11 @@ var RepoAddCommand = cli.Command{
 			return err
 		}
 
-		if len(c.Args()) != 2 {
+		if c.NArg() != 2 {
 			Fatal("Must specify name and repo-path")
 		}
-		name := c.Args()[0]
-		rpath := c.Args()[1]
+		name := c.Args().Get(0)
+		rpath := c.Args().Get(1)
 
 		// make sure we can fetch it
 		_, err = pm.FetchRepo(rpath, false)
@@ -211,7 +211,7 @@ var RepoUpdateCommand = cli.Command{
 
 		var args []string
 		if c.Args().Present() {
-			args = c.Args()
+			args = c.Args().Slice()
 		} else {
 			for k := range repos {
 				args = append(args, k)

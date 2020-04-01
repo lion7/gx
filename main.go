@@ -82,8 +82,8 @@ func main() {
 
 	app := cli.NewApp()
 	app.Authors = []*cli.Author{
-	        &cli.Author{
-			Name:  "whyrusleeping",
+		&cli.Author{
+			Name: "whyrusleeping",
 		},
 	}
 	app.Version = gx.GxVersion
@@ -255,11 +255,11 @@ EXAMPLE
 		},
 	},
 	Action: func(c *cli.Context) error {
-		if len(c.Args()) == 0 {
+		if c.NArg() == 0 {
 			return fmt.Errorf("import requires a package reference")
 		}
 
-		global := c.BoolT("global")
+		global := c.Bool("global")
 		if c.Bool("local") {
 			global = false
 		}
@@ -355,7 +355,7 @@ var InstallCommand = cli.Command{
 
 		save := c.Bool("save")
 
-		global := c.BoolT("global")
+		global := c.Bool("global")
 		if c.Bool("local") {
 			global = false
 		}
@@ -364,7 +364,7 @@ var InstallCommand = cli.Command{
 
 		pm.ProgMeter = progmeter.NewProgMeter(c.Bool("nofancy"))
 
-		if len(c.Args()) == 0 {
+		if c.NArg() == 0 {
 			cwd, err := os.Getwd()
 			if err != nil {
 				return err
@@ -392,7 +392,7 @@ var InstallCommand = cli.Command{
 			return err
 		}
 
-		for _, p := range c.Args() {
+		for _, p := range c.Args().Slice() {
 			phash, err := pm.ResolveDepName(p)
 			if err != nil {
 				return fmt.Errorf("resolving package '%s': %s", p, err)
@@ -475,7 +475,7 @@ var InitCommand = cli.Command{
 	},
 	Action: func(c *cli.Context) error {
 		var pkgname string
-		if len(c.Args()) > 0 {
+		if c.NArg() > 0 {
 			pkgname = c.Args().First()
 		} else {
 			pkgname = filepath.Base(cwd)
@@ -538,16 +538,16 @@ EXAMPLE:
 		}
 
 		var existing, target string
-		switch len(c.Args()) {
+		switch c.NArg() {
 		case 0:
 			log.Fatal("update requires two arguments, current and target")
 		case 1:
-			target = c.Args()[0]
+			target = c.Args().Get(0)
 		case 2:
-			existing = c.Args()[0]
-			target = c.Args()[1]
+			existing = c.Args().Get(0)
+			target = c.Args().Get(1)
 		default:
-			log.Log("ignoring extra arguments: %s", c.Args()[2:])
+			log.Log("ignoring extra arguments: %s", c.Args().Slice()[2:])
 		}
 
 		trgthash, err := pm.ResolveDepName(target)
@@ -555,7 +555,7 @@ EXAMPLE:
 			return err
 		}
 
-		global := c.BoolT("global")
+		global := c.Bool("global")
 		if c.Bool("local") {
 			global = false
 		}
@@ -780,13 +780,13 @@ EXAMPLE:
 		}
 
 		var cfg map[string]interface{}
-		if len(c.Args()) == 2 {
+		if c.NArg() == 2 {
 			pkg, err := LoadPackageFile(gx.PkgFileName)
 			if err != nil {
 				return err
 			}
 
-			ref := c.Args()[0]
+			ref := c.Args().Get(0)
 			dep := pkg.FindDep(ref)
 			if dep == nil {
 				return fmt.Errorf("no dep referenced by %s", ref)
@@ -807,7 +807,7 @@ EXAMPLE:
 			}
 		}
 
-		queryStr := c.Args()[len(c.Args())-1]
+		queryStr := c.Args().Get(c.NArg() - 1)
 		val, err := filter.Get(cfg, queryStr)
 		if err != nil {
 			return err
@@ -1139,7 +1139,7 @@ var depFindCommand = cli.Command{
 	Usage: "print hash of a given dependency",
 	Action: func(c *cli.Context) error {
 
-		if len(c.Args()) != 1 {
+		if c.NArg() != 1 {
 			return fmt.Errorf("must be passed exactly one argument")
 		}
 
@@ -1148,7 +1148,7 @@ var depFindCommand = cli.Command{
 			return err
 		}
 
-		dep := c.Args()[0]
+		dep := c.Args().Get(0)
 
 		for _, d := range pkg.Dependencies {
 			if d.Name == dep {
@@ -1318,11 +1318,11 @@ var DiffCommand = cli.Command{
 	Usage:       "gx diff <old> <new>",
 	Description: "gx diff prints the changes between two given packages",
 	Action: func(c *cli.Context) error {
-		if len(c.Args()) != 2 {
+		if c.NArg() != 2 {
 			return fmt.Errorf("gx diff takes two arguments")
 		}
-		a := c.Args()[0]
-		b := c.Args()[1]
+		a := c.Args().Get(0)
+		b := c.Args().Get(1)
 
 		diff, err := DiffPackages(a, b)
 		if err != nil {
@@ -1431,7 +1431,7 @@ var TestCommand = cli.Command{
 		if pkg.Test != "" {
 			testErr = fmt.Errorf("don't support running custom test script yet, bug whyrusleeping")
 		} else {
-			testErr = gx.TryRunHook("test", pkg.Language, pkg.SubtoolRequired, c.Args()...)
+			testErr = gx.TryRunHook("test", pkg.Language, pkg.SubtoolRequired, c.Args().Slice()...)
 		}
 
 		err = gx.TryRunHook("post-test", pkg.Language, pkg.SubtoolRequired)
